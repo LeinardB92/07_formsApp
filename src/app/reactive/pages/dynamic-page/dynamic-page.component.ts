@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   templateUrl: './dynamic-page.component.html',
@@ -9,7 +9,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class DynamicPageComponent {
 
   // Esta es otra manera de crear la estructura del formulario, sin el uso de FormBuilder
-  // public myForm2 = new FormGroup({
+  // public myForm2: FormControl = new FormGroup({
   // name: new FormControl('', [], []),
   //   favoriteGames: new FormArray([])
   // });
@@ -23,10 +23,24 @@ export class DynamicPageComponent {
     ])
   });
 
+  public newFavorite: FormControl = new FormControl('', Validators.required );
+
   constructor(private fb: FormBuilder){}
 
   get favoriteGames() {
     return this.myForm.get('favoriteGames') as FormArray;
+  }
+
+  onAddToFavorites():void {
+    if ( this.newFavorite.invalid ) return;
+    const newGame = this.newFavorite.value;
+
+    // this.favoriteGames.push(  new FormControl( newGame, Validators.required ) );
+    this.favoriteGames.push(
+      this.fb.control( newGame, Validators.required )
+    );
+
+    this.newFavorite.reset();
   }
 
   onDeleteFavorite( index:number ):void {
@@ -41,6 +55,7 @@ export class DynamicPageComponent {
     }
 
     console.log(this.myForm.value);
+    (this.myForm.controls['favoriteGames'] as FormArray ) = this.fb.array([]);
     this.myForm.reset();
   }
 }

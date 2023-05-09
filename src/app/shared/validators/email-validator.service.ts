@@ -12,7 +12,7 @@ export class EmailValidatorService implements AsyncValidator {
 
       console.log({ email });
 
-      if ( email === 'fernando@google.com' ) {
+      if ( email === 'boanerges@google.com' ) {
         subscriber.next({ emailTaken: true });
         subscriber.complete();
         // return;
@@ -20,7 +20,6 @@ export class EmailValidatorService implements AsyncValidator {
 
       subscriber.next(null);
       subscriber.complete();
-
 
     }).pipe(
       delay( 3000 )
@@ -38,7 +37,7 @@ export class EmailValidatorService implements AsyncValidator {
     return of({
       emailTaken: true
     }).pipe(delay(2000))
-  }
+  }.
   */
 
 
